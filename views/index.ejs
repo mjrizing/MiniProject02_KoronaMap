@@ -7,17 +7,21 @@
     <title>myfirstmap</title>
     <link rel="stylesheet" href="stylesheets/style.css"/>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=nk3nty8fz7"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" 
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" 
+    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3d10a5fa204e2ceb054436e1ce4e1c2a&libraries=services"></script>
 </head>
 <body>
-    <script id="__bs_script__">//<![CDATA[
-    document.write("<script async src='/browser-sync/browser-sync-client.js?v=2.26.7'><\/script>".replace("HOST", location.hostname));
-//]]></script>
 <!--코로나맵 원페이지뷰로 만들기.-->
 <div id="navbar">myfirstmap</div>
 <div id="infoBox">
     <div id="infoTitle">현재날짜</div>
     <div id="infoContent">2021.05.09</div>
+</div>
+<div id="search">
+    <input id="search_input" placeholder="목적지를 입력해주세요"/>
+    <button id="search_button">검색</button>
 </div>
 <div id="current">현재위치</div>
 <div id="map" style="width:100%;height:100vh;"></div>
@@ -89,20 +93,26 @@ for (var i = 0, ii = markerList.length; i< ii; i++){
             }
         }
     }
+
+    let currentUse = true;
+
     $('#current').click(() => {
         if('geolocation' in navigator){
             navigator.geolocation.getCurrentPosition(function(position){
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
                 const latlng = new naver.maps.LatLng(lat,lng);
-                marker = new naver.maps.Marker({
+                if (currentUse) {
+                    marker = new naver.maps.Marker({
                     map: map,
                     position: latlng,
                     icon: {
                         content: '<img class="pulse" draggable="false" unselectable="on" src="https://myfirstmap.s3.ap-northeast-2.amazonaws.com/circle.png">',
                         anchor: new naver.maps.Point(11,11),
-                    }
+                    },
                 });
+                currentUse = false;
+                }
                 map.setZoom(14, false);
                 map.panTo(latlng);
             });
