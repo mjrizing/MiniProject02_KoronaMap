@@ -9,7 +9,7 @@
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=nk3nty8fz7"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" 
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4f811e4d3d4715213997575faa857911&libraries=services"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3d10a5fa204e2ceb054436e1ce4e1c2a&libraries=services"></script>
 </head>
 <body>
 <!--코로나맵 원페이지뷰로 만들기.-->
@@ -130,6 +130,12 @@ for (var i = 0, ii = markerList.length; i< ii; i++){
         }
     })
 
+$("#search_button").on("click", function(e){
+    let content = $("#search_input").val();
+    ps.keywordSearch(content, placeSearchCB);
+})
+
+
     function placeSearchCB(data,status,pagination) {
         if(status === kakao.maps.services.Status.OK){
             let target = data;
@@ -147,6 +153,8 @@ for (var i = 0, ii = markerList.length; i< ii; i++){
                 let pre_marker = search_arr.splice(0,1);
                 pre_marker[0].setMap(null);
             }
+            map.setZoom(14, false);
+            map.panTo(latlng);
         }else{
             alert("검색결과가 없습니다.")
         }
